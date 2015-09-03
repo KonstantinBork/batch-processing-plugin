@@ -17,7 +17,8 @@ import java.util.concurrent.ConcurrentLinkedQueue
 
 class BatchConsumerService implements Consumer {
 
-    def batchQueueService
+    def priorityBatchQueueService
+    //def batchQueueService
 
     static final int MAX_WORKERS = 15                                               // number of workers
     ConcurrentLinkedQueue<Worker> availableWorkers = new ConcurrentLinkedQueue<>()  // list with all available workers
@@ -30,7 +31,7 @@ class BatchConsumerService implements Consumer {
 
     @Override
     void consumeNextTask() {
-        Message m = batchQueueService.dequeue()
+        Message m = priorityBatchQueueService.dequeue()
         Thread.start {
             runTask(m)
         }

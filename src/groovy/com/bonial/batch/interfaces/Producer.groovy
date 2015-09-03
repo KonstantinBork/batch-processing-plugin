@@ -19,6 +19,6 @@ interface Producer {
      * @param params list of parameters needed for execution
      * @return unique ID of the task put into the queue
      */
-    void produceTask(String jobName, Map params)
+    void produceTask(String jobName, Map params, String priority)
 
 }

@@ -16,6 +16,7 @@ import org.springframework.batch.core.launch.JobOperator
 class BatchInputController implements InputController {
 
     def batchProducerService
+    def priorityBatchProducerService
     def springBatchService
     def batchConsumerService
 
@@ -34,10 +35,14 @@ class BatchInputController implements InputController {
     }
 
     @Override
-    def registerTask(def batchTaskName, def batchFile) {
+    def registerTask(def batchTaskName, def batchFile, def priority) {
         File temp = File.createTempFile("temp", ".txt")
         batchFile.transferTo(temp)
-        batchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"])
+        if(priority != "0") {
+            priorityBatchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"], priority)
+        } else {
+            batchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"])
+        }
     }
 
     @Override

@@ -14,7 +14,7 @@ interface InputController {
     /**
      * Registers a new batch task to the queue.
      */
-    def registerTask(def batchTaskName, def batchFile)
+    def registerTask(def batchTaskName, def batchFile, def priority)
 
     /**
      * Gets the current status of the given batch task.
