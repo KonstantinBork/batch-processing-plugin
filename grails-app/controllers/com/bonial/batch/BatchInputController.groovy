@@ -38,7 +38,6 @@ class BatchInputController implements InputController {
         File temp = File.createTempFile("temp", ".txt")
         batchFile.transferTo(temp)
         batchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"])
-        redirect(action: index())
     }
 
     @Override
@@ -50,7 +49,6 @@ class BatchInputController implements InputController {
     def stopTask(def batchExecutionId) {
         JobOperator operator = springBatchService.jobOperator
         operator.stop(batchExecutionId)
-        redirect(action: index())
     }
 
     private Map prepareLists() {

@@ -27,7 +27,7 @@ class SimpleWorker implements Worker {
     @Override
     boolean start(Message taskMessage) {
         try {
-            currentTask = m.payload
+            currentTask = taskMessage.payload
             Job job = currentTask.job
             JobParameters params = currentTask.jobParameters
             if (!params) {

@@ -33,7 +33,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        build(":tomcat:$grailsVersion",
+        build(//":tomcat:$grailsVersion",
               ":release:2.2.1",
               ":rest-client-builder:1.0.3") {
             export = false
@@ -41,6 +41,6 @@ grails.project.dependency.resolution = {
         // include the Spring Batch plugin for Grails
         compile ':spring-batch:2.0.0'
 
-        runtime ":hibernate:$grailsVersion"
+        //runtime ":hibernate:$grailsVersion"
     }
 }

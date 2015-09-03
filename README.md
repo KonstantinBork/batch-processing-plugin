@@ -1,2 +1,2 @@
 # batch-processing-plugin
-Version 0.5 build 17
+Version 0.5 build 18
