@@ -1,6 +1,6 @@
 class BatchProcessingPluginGrailsPlugin {
     // the plugin version
-    def version = "0.1"
+    def version = "0.5"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.2 > *"
     // resources that are excluded from plugin packaging
@@ -13,7 +13,8 @@ class BatchProcessingPluginGrailsPlugin {
     def author = "Konstantin Bork"
     def authorEmail = "konstantin.bork@kaufda.de"
     def description = '''\
-Brief summary/description of the plugin.
+The Batch Processing Plugin allows your application to define Spring Batch jobs and\
+store them in a queue for asynchronous processing by several workers.
 '''
 
     // URL to the plugin's documentation
@@ -22,7 +23,7 @@ Brief summary/description of the plugin.
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
+    def license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
 //    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]
