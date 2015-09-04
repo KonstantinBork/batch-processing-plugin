@@ -7,6 +7,7 @@ import org.springframework.batch.core.JobExecution
 import org.springframework.batch.core.JobParameter
 import org.springframework.batch.core.JobParameters
 import org.springframework.batch.core.launch.JobLauncher
+import org.springframework.batch.repeat.RepeatStatus
 import org.springframework.integration.Message
 
 /**
@@ -36,6 +37,8 @@ class SimpleWorker implements Worker {
             JobLauncher launcher = springBatchService.jobLauncher
             JobExecution execution = launcher.run(job, params)
             currentTaskExecutionId = execution.jobId
+            while(execution.exitStatus.exitCode != "COMPLETED")
+                Thread.sleep(1000)
             return true
         } catch(e) {
             print("$e\n")
