@@ -37,7 +37,7 @@ class SimpleWorker implements Worker {
             JobLauncher launcher = springBatchService.jobLauncher
             JobExecution execution = launcher.run(job, params)
             currentTaskExecutionId = execution.jobId
-            while(execution.exitStatus.exitCode != "COMPLETED")
+            while(execution.exitStatus.exitCode == "EXECUTING")
                 Thread.sleep(1000)
             return true
         } catch(e) {

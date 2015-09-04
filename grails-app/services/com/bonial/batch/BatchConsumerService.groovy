@@ -22,7 +22,7 @@ class BatchConsumerService implements Consumer {
     def priorityBatchQueueService
 
     static final Random RANDOM_OBJECT = new Random()
-    static final int MAX_WAINTING_MILLISECONDS = 10000
+    static final int MAX_WAITING_MILLISECONDS = 10000
 
     static final int MAX_WORKERS = 5                                                // number of workers
     ConcurrentLinkedQueue<Worker> availableWorkers = new ConcurrentLinkedQueue<>()  // list with all available workers
@@ -55,7 +55,7 @@ class BatchConsumerService implements Consumer {
         w.start(m)
         busyWorkers.remove(w)
         availableWorkers.add(w)
-        Thread.sleep(RANDOM_OBJECT.nextInt(MAX_WAINTING_MILLISECONDS))
+        Thread.sleep(RANDOM_OBJECT.nextInt(MAX_WAITING_MILLISECONDS))
     }
 
 }
