@@ -2,6 +2,11 @@ package com.bonial.batch
 
 import com.bonial.batch.interfaces.Consumer
 import com.bonial.batch.interfaces.Worker
+import org.springframework.batch.core.Job
+import org.springframework.batch.core.JobExecution
+import org.springframework.batch.core.JobParameter
+import org.springframework.batch.core.JobParameters
+import org.springframework.batch.core.launch.JobLauncher
 import org.springframework.integration.Message
 
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -9,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 /**
  * batch-processor
  * @author  Konstantin Bork
- * @version 0.5
+ * @version 0.6
  * @created 08/28/2015
  *
  * The implementation of the Consumer interface.
@@ -18,7 +23,6 @@ import java.util.concurrent.ConcurrentLinkedQueue
 class BatchConsumerService implements Consumer {
 
     def priorityBatchQueueService
-    //def batchQueueService
 
     static final int MAX_WORKERS = 15                                               // number of workers
     ConcurrentLinkedQueue<Worker> availableWorkers = new ConcurrentLinkedQueue<>()  // list with all available workers
@@ -46,7 +50,6 @@ class BatchConsumerService implements Consumer {
         w.start(m)
         busyWorkers.remove(w)
         availableWorkers.add(w)
-        Thread.sleep(new Random().nextInt(100))
     }
 
 }
