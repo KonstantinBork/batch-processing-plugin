@@ -7,7 +7,7 @@ import org.springframework.batch.core.launch.JobOperator
 /**
  * batch-processor
  * @author  Konstantin Bork
- * @version 0.5
+ * @version 0.6
  * @created 08/28/2015
  *
  * Controller for incoming batch tasks.
@@ -15,20 +15,27 @@ import org.springframework.batch.core.launch.JobOperator
 
 class BatchInputController implements InputController {
 
-    def batchProducerService
+    static scope = "singleton"
+
     def priorityBatchProducerService
     def springBatchService
     def batchConsumerService
 
-    boolean consumingRunning = false
+    def consumerThread = {
+        while (true)
+            batchConsumerService.consumeNextTask()
+    }
+
+    boolean isConsumerRunning = false
+
+    BatchInputController() {
+
+    }
 
     def index() {
-        if(!consumingRunning) {
-            Thread.start {
-                while(true)
-                    batchConsumerService.consumeNextTask()
-            }
-            consumingRunning = true
+        if(!isConsumerRunning) {
+            Thread.start(consumerThread)
+            isConsumerRunning = true
         }
         Map lists = prepareLists()
         render(view: "index", model: lists)
@@ -38,11 +45,7 @@ class BatchInputController implements InputController {
     def registerTask(def batchTaskName, def batchFile, def priority) {
         File temp = File.createTempFile("temp", ".txt")
         batchFile.transferTo(temp)
-        if(priority != "0") {
-            priorityBatchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"], priority)
-        } else {
-            batchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"])
-        }
+        priorityBatchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"], priority)
     }
 
     @Override

@@ -6,6 +6,15 @@ import org.springframework.batch.item.ItemProcessor
 import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.file.LineMapper
 
+/**
+ * batch-processor
+ * @author Konstantin Bork
+ * @version 1.0
+ * @created 09/01/2015
+ *
+ * Example for a job step which read, processes and writes data.
+ */
+
 class FileLineMapper implements LineMapper<NameItem> {
 
     @Override

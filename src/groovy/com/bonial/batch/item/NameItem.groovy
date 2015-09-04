@@ -3,10 +3,8 @@ package com.bonial.batch.item
 /**
  * batch-processor
  * @author Konstantin Bork
- * @version 0.1
+ * @version 0.6
  * @created 09/02/2015
- *
- * §DESCRIPTION§
  */
 
 class NameItem {
