@@ -2,11 +2,6 @@ package com.bonial.batch
 
 import com.bonial.batch.interfaces.Consumer
 import com.bonial.batch.interfaces.Worker
-import org.springframework.batch.core.Job
-import org.springframework.batch.core.JobExecution
-import org.springframework.batch.core.JobParameter
-import org.springframework.batch.core.JobParameters
-import org.springframework.batch.core.launch.JobLauncher
 import org.springframework.integration.Message
 
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -22,9 +17,14 @@ import java.util.concurrent.ConcurrentLinkedQueue
 
 class BatchConsumerService implements Consumer {
 
+    static transactional = false
+
     def priorityBatchQueueService
 
-    static final int MAX_WORKERS = 15                                               // number of workers
+    static final Random RANDOM_OBJECT = new Random()
+    static final int MAX_WAITING_MILLISECONDS = 10000
+
+    static final int MAX_WORKERS = 5                                                // number of workers
     ConcurrentLinkedQueue<Worker> availableWorkers = new ConcurrentLinkedQueue<>()  // list with all available workers
     ConcurrentLinkedQueue<Worker> busyWorkers = new ConcurrentLinkedQueue<>()       // list with all busy workers
 
@@ -36,20 +36,26 @@ class BatchConsumerService implements Consumer {
     @Override
     void consumeNextTask() {
         Message m = priorityBatchQueueService.dequeue()
+        Worker w = getWorker()
         Thread.start {
-            runTask(m)
+            runTask(w, m)
         }
     }
 
-    void runTask(Message m) {
+    Worker getWorker() {
         Worker w = availableWorkers.poll()
         while(!w) {
             w = availableWorkers.poll()
         }
         busyWorkers.add(w)
+        return w
+    }
+
+    void runTask(Worker w, Message m) {
         w.start(m)
         busyWorkers.remove(w)
         availableWorkers.add(w)
+        Thread.sleep(RANDOM_OBJECT.nextInt(MAX_WAITING_MILLISECONDS))
     }
 
 }
