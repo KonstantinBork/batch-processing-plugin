@@ -15,6 +15,8 @@ import org.springframework.integration.channel.QueueChannel
 
 class BatchQueueService implements Queue {
 
+    def jobMessageMapService
+
     static int QUEUE_SIZE = 1000
     def queueChannel = new QueueChannel(QUEUE_SIZE)
 
@@ -23,6 +25,8 @@ class BatchQueueService implements Queue {
         if(queueChannel.remainingCapacity == 0)
             return false
         def sent = queueChannel.send(message)
+        long id = jobMessageMapService.hashMessage(message)
+        jobMessageMapService.addJobStatus(id, "QUEUED")
         return sent
     }
 

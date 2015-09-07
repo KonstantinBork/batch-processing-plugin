@@ -1,9 +1,13 @@
 package com.bonial.batch
 
 import com.bonial.batch.interfaces.InputController
+import grails.util.Holders
 import org.springframework.batch.core.JobExecution
-import org.springframework.batch.core.configuration.JobRegistry
+import org.springframework.batch.core.JobParameter
+import org.springframework.batch.core.JobParameters
 import org.springframework.batch.core.launch.JobOperator
+import org.springframework.batch.core.repository.JobRepository
+import org.springframework.integration.Message
 
 /**
  * batch-processor
@@ -21,7 +25,7 @@ class BatchInputController implements InputController {
     def priorityBatchProducerService
     def springBatchService
     def batchConsumerService
-    def jobExecutionMapService
+    def jobMessageMapService
 
     def consumerThread = {
         while (true)
@@ -46,15 +50,23 @@ class BatchInputController implements InputController {
 
     @Override
     def getStatus(def batchExecutionId) {
-        JobExecution execution = jobExecutionMapService.getJobExecution(batchExecutionId)
-        return execution.status
+        return jobMessageMapService.getJobStatus(batchExecutionId)
     }
 
     @Override
     def stopTask(def batchExecutionId) {
         JobOperator operator = springBatchService.jobOperator
-        JobExecution execution = jobExecutionMapService.getJobExecution(batchExecutionId)
+        if(jobMessageMapService.getJobStatus(batchExecutionId) == "FINISHED") return
+        JobExecution execution = getLastExecution(batchExecutionId)
         operator.stop(execution.id)
+    }
+
+    JobExecution getLastExecution(long id) {
+        Message message = jobMessageMapService.getJobMessage(id)
+        String jobName = message.payload.job.name
+        JobParameters params = message.payload.jobParameters
+        JobRepository repository = Holders.grailsApplication.mainContext.getBean("jobRepository")
+        return repository.getLastJobExecution(jobName, params)
     }
 
 }

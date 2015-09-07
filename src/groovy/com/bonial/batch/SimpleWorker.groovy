@@ -21,7 +21,6 @@ import org.springframework.integration.Message
 class SimpleWorker implements Worker {
 
     def springBatchService = Holders.grailsApplication.mainContext.getBean("springBatchService")
-    def jobExecutionMapService = Holders.grailsApplication.mainContext.getBean("jobExecutionMapService")
 
     def currentTask
     def currentTaskExecutionId = -1
@@ -37,8 +36,6 @@ class SimpleWorker implements Worker {
             }
             JobLauncher launcher = springBatchService.jobLauncher
             JobExecution execution = launcher.run(job, params)
-            currentTaskExecutionId = calcUniqueID(job, params)
-            jobExecutionMapService.addJobExection(currentTaskExecutionId, execution)
             while(execution.exitStatus.exitCode == "EXECUTING")
                 Thread.sleep(1000)
             return true
@@ -66,18 +63,6 @@ class SimpleWorker implements Worker {
         def dateParam = new HashMap<String, JobParameter>()
         dateParam.put("date", new JobParameter(new Date()))
         return new JobParameters(dateParam)
-    }
-
-    long calcUniqueID(Job job, JobParameters params) {
-        long id = job.hashCode() + paramHash(params)
-        return id
-    }
-
-    long paramHash(JobParameters params) {
-        long temp = 0
-        for(def param in params)
-            temp += param.hashCode()
-        return temp
     }
 
 }
