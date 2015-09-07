@@ -1,6 +1,7 @@
 package com.bonial.batch
 
 import com.bonial.batch.interfaces.InputController
+import org.springframework.batch.core.JobExecution
 import org.springframework.batch.core.configuration.JobRegistry
 import org.springframework.batch.core.launch.JobOperator
 
@@ -20,6 +21,7 @@ class BatchInputController implements InputController {
     def priorityBatchProducerService
     def springBatchService
     def batchConsumerService
+    def jobExecutionMapService
 
     def consumerThread = {
         while (true)
@@ -28,17 +30,11 @@ class BatchInputController implements InputController {
 
     boolean isConsumerRunning = false
 
-    BatchInputController() {
-
-    }
-
     def index() {
         if(!isConsumerRunning) {
             Thread.start(consumerThread)
             isConsumerRunning = true
         }
-        Map lists = prepareLists()
-        render(view: "index", model: lists)
     }
 
     @Override
@@ -50,25 +46,15 @@ class BatchInputController implements InputController {
 
     @Override
     def getStatus(def batchExecutionId) {
-        redirect(controller: "springBatchJobExecution", action: "show", id: batchExecutionId)
+        JobExecution execution = jobExecutionMapService.getJobExecution(batchExecutionId)
+        return execution.status
     }
 
     @Override
     def stopTask(def batchExecutionId) {
         JobOperator operator = springBatchService.jobOperator
-        operator.stop(batchExecutionId)
-    }
-
-    private Map prepareLists() {
-        JobRegistry registry = springBatchService.jobRegistry
-        Collection<String> jobs = registry.jobNames
-        JobOperator operator = springBatchService.jobOperator
-        Map runningExecutions = [:]
-        for(String job in jobs) {
-            Set<Long> execs = operator.getRunningExecutions(job)
-            runningExecutions.put(job, execs)
-        }
-        return [jobNames: jobs, executions: runningExecutions]
+        JobExecution execution = jobExecutionMapService.getJobExecution(batchExecutionId)
+        operator.stop(execution.id)
     }
 
 }
