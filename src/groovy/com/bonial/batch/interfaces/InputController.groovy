@@ -3,7 +3,7 @@ package com.bonial.batch.interfaces
 /**
  * batch-processing-plugin
  * @author Konstantin Bork
- * @version 0.5
+ * @version 0.8
  * @created 08/28/2015
  *
  * Interface for the input controller.
@@ -14,16 +14,16 @@ interface InputController {
     /**
      * Registers a new batch task to the queue.
      */
-    def registerTask(def batchTaskName, def batchFile)
+    void registerTask(String batchTaskName, def batchFile, String priority)
 
     /**
      * Gets the current status of the given batch task.
      */
-    def getStatus(def batchExecutionId)
+    String getStatus(String batchId)
 
     /**
      * Requests to stop the given batch task.
      */
-    def stopTask(def batchExecutionId)
+    void stopTask(String batchId)
 
 }

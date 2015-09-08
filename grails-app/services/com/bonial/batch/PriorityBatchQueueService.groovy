@@ -2,29 +2,29 @@ package com.bonial.batch
 
 import com.bonial.batch.interfaces.Queue
 import org.springframework.integration.Message
-import org.springframework.integration.channel.QueueChannel
+import org.springframework.integration.channel.PriorityChannel
 
 /**
  * batch-processor
  * @author  Konstantin Bork
- * @version 0.8
- * @created 08/28/2015
+ * @version 0.6
+ * @created 09/03/2015
  *
- * The implementation of the Queue interface.
+ * Another implementation of the Queue interface.
  */
 
-class BatchQueueService implements Queue {
+class PriorityBatchQueueService implements Queue {
 
     def batchMapService
 
     static int QUEUE_SIZE = 1000
-    def queueChannel = new QueueChannel(QUEUE_SIZE)
+    def priorityQueueChannel = new PriorityChannel(QUEUE_SIZE)
 
     @Override
     boolean enqueue(Message message) {
-        if(queueChannel.remainingCapacity == 0)
+        if(priorityQueueChannel.remainingCapacity == 0)
             return false
-        def sent = queueChannel.send(message)
+        def sent = priorityQueueChannel.send(message)
         String id = batchMapService.hashMessage(message)
         batchMapService.addJobStatus(id, "QUEUED")
         return sent
@@ -32,13 +32,13 @@ class BatchQueueService implements Queue {
 
     @Override
     Message dequeue() {
-        Message m = queueChannel.receive()
+        Message m = priorityQueueChannel.receive()
         return m
     }
 
     @Override
     int size() {
-        return queueChannel.queueSize
+        return priorityQueueChannel.queueSize
     }
 
     @Override

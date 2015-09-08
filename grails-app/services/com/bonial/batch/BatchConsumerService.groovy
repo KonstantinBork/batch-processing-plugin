@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 /**
  * batch-processor
  * @author  Konstantin Bork
- * @version 0.5
+ * @version 0.8
  * @created 08/28/2015
  *
  * The implementation of the Consumer interface.
@@ -17,9 +17,14 @@ import java.util.concurrent.ConcurrentLinkedQueue
 
 class BatchConsumerService implements Consumer {
 
-    def batchQueueService
+    static transactional = false
 
-    static final int MAX_WORKERS = 15                                               // number of workers
+    def priorityBatchQueueService
+
+    static final Random RANDOM_OBJECT = new Random()
+    static final int MAX_WAITING_MILLISECONDS = 10000
+
+    static final int MAX_WORKERS = 5                                                // number of workers
     ConcurrentLinkedQueue<Worker> availableWorkers = new ConcurrentLinkedQueue<>()  // list with all available workers
     ConcurrentLinkedQueue<Worker> busyWorkers = new ConcurrentLinkedQueue<>()       // list with all busy workers
 
@@ -30,22 +35,27 @@ class BatchConsumerService implements Consumer {
 
     @Override
     void consumeNextTask() {
-        Message m = batchQueueService.dequeue()
+        Message m = priorityBatchQueueService.dequeue()
+        Worker w = getWorker()
         Thread.start {
-            runTask(m)
+            runTask(w, m)
         }
     }
 
-    void runTask(Message m) {
+    Worker getWorker() {
         Worker w = availableWorkers.poll()
         while(!w) {
             w = availableWorkers.poll()
         }
         busyWorkers.add(w)
+        return w
+    }
+
+    void runTask(Worker w, Message m) {
         w.start(m)
         busyWorkers.remove(w)
         availableWorkers.add(w)
-        Thread.sleep(new Random().nextInt(100))
+        Thread.sleep(RANDOM_OBJECT.nextInt(MAX_WAITING_MILLISECONDS))
     }
 
 }

@@ -1,6 +1,6 @@
 class BatchProcessingPluginGrailsPlugin {
     // the plugin version
-    def version = "0.1"
+    def version = "0.8"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.2 > *"
     // resources that are excluded from plugin packaging
@@ -8,21 +8,21 @@ class BatchProcessingPluginGrailsPlugin {
             "grails-app/views/error.gsp"
     ]
 
-    // TODO Fill in these fields
     def title = "Batch Processing Plugin" // Headline display name of the plugin
     def author = "Konstantin Bork"
     def authorEmail = "konstantin.bork@kaufda.de"
     def description = '''\
-Brief summary/description of the plugin.
+The Batch Processing Plugin allows your application to define Spring Batch jobs and\
+store them in a queue for asynchronous processing by workers.
 '''
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/batch-processing-plugin"
+    def documentation = "https://github.com/KonstantinBork/batch-processing-plugin"
 
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
+    def license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
 //    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]
@@ -34,7 +34,7 @@ Brief summary/description of the plugin.
 //    def issueManagement = [ system: "JIRA", url: "http://jira.grails.org/browse/GPMYPLUGIN" ]
 
     // Online location of the plugin's browseable source code.
-//    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
+    def scm = [ url: "https://github.com/KonstantinBork/batch-processing-plugin" ]
 
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional), this event occurs before
@@ -66,4 +66,5 @@ Brief summary/description of the plugin.
     def onShutdown = { event ->
         // TODO Implement code that is executed when the application shuts down (optional)
     }
+
 }
