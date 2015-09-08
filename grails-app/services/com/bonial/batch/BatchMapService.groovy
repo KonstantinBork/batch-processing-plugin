@@ -7,18 +7,19 @@ import java.security.MessageDigest
 /**
  * batch-processing-plugin
  * @author Konstantin Bork
- * @version 0.3
+ * @version 0.8
  * @created 09/07/2015
  *
- * A service which saves all executions in memory.
+ * A service which saves all incoming tasks in memory.
+ * ~ TODO database connection
  */
 
-class JobMessageMapService {
+class BatchMapService {
 
     Map<String, Message> jobMessages
     Map<String, String> jobStatus
 
-    JobMessageMapService() {
+    BatchMapService() {
         jobMessages = new HashMap<>()
         jobStatus = new HashMap<>()
     }

@@ -7,7 +7,7 @@ import org.springframework.integration.channel.QueueChannel
 /**
  * batch-processor
  * @author  Konstantin Bork
- * @version 0.5
+ * @version 0.8
  * @created 08/28/2015
  *
  * The implementation of the Queue interface.
@@ -15,7 +15,7 @@ import org.springframework.integration.channel.QueueChannel
 
 class BatchQueueService implements Queue {
 
-    def jobMessageMapService
+    def batchMapService
 
     static int QUEUE_SIZE = 1000
     def queueChannel = new QueueChannel(QUEUE_SIZE)
@@ -25,8 +25,8 @@ class BatchQueueService implements Queue {
         if(queueChannel.remainingCapacity == 0)
             return false
         def sent = queueChannel.send(message)
-        long id = jobMessageMapService.hashMessage(message)
-        jobMessageMapService.addJobStatus(id, "QUEUED")
+        String id = batchMapService.hashMessage(message)
+        batchMapService.addJobStatus(id, "QUEUED")
         return sent
     }
 
@@ -45,4 +45,5 @@ class BatchQueueService implements Queue {
     boolean isEmpty() {
         return size() == 0
     }
+
 }

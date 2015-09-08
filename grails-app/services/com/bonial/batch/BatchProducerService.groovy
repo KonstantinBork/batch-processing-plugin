@@ -12,7 +12,7 @@ import org.springframework.integration.message.GenericMessage
 /**
  * batch-processor
  * @author  Konstantin Bork
- * @version 0.5
+ * @version 0.8
  * @created 08/28/2015
  *
  * The implementation of the Producer interface.
@@ -21,7 +21,7 @@ import org.springframework.integration.message.GenericMessage
 class BatchProducerService implements Producer {
 
     def batchQueueService
-    def jobMessageMapService
+    def batchMapService
     def springBatchService
 
     @Override
@@ -29,9 +29,9 @@ class BatchProducerService implements Producer {
         Job job = findJob(jobName)
         JobLaunchRequest launchRequest = buildLaunchRequest(job, params)
         Message m = new GenericMessage(launchRequest)
-        long hash = jobMessageMapService.hashMessage(m)
-        jobMessageMapService.addJobMessage(hash, m)
-        jobMessageMapService.addJobStatus(hash, "CREATED")
+        String hash = batchMapService.hashMessage(m)
+        batchMapService.addJobMessage(hash, m)
+        batchMapService.addJobStatus(hash, "CREATED")
         batchQueueService.enqueue(m)
     }
 

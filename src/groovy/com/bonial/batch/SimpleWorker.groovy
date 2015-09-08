@@ -13,7 +13,7 @@ import org.springframework.integration.Message
 /**
  * batch-processing-plugin
  * @author Konstantin Bork
- * @version 0.6
+ * @version 0.8
  * @created 08/31/2015
  *
  * Implementation of the Worker interface.
@@ -22,7 +22,7 @@ import org.springframework.integration.Message
 class SimpleWorker implements Worker {
 
     def springBatchService = Holders.grailsApplication.mainContext.getBean("springBatchService")
-    def jobMessageMapService = Holders.grailsApplication.mainContext.getBean("jobMessageMapService")
+    def jobMessageMapService = Holders.grailsApplication.mainContext.getBean("batchMapService")
 
     def currentTask
     def currentTaskExecutionId = -1

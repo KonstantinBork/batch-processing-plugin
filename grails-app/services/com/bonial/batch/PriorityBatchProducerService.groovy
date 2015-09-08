@@ -7,7 +7,6 @@ import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.configuration.JobRegistry
 import org.springframework.batch.integration.launch.JobLaunchRequest
 import org.springframework.integration.Message
-import org.springframework.integration.MessageHeaders
 import org.springframework.integration.message.GenericMessage
 
 /**
@@ -22,7 +21,7 @@ import org.springframework.integration.message.GenericMessage
 class PriorityBatchProducerService implements Producer {
 
     def priorityBatchQueueService
-    def jobMessageMapService
+    def batchMapService
     def springBatchService
 
     @Override
@@ -30,9 +29,9 @@ class PriorityBatchProducerService implements Producer {
         Job job = findJob(jobName)
         JobLaunchRequest launchRequest = buildLaunchRequest(job, params)
         Message m = new GenericMessage(launchRequest, [priority: Integer.parseInt(priority)])
-        String hash = jobMessageMapService.hashMessage(m)
-        jobMessageMapService.addJobMessage(hash, m)
-        jobMessageMapService.addJobStatus(hash, "CREATED")
+        String hash = batchMapService.hashMessage(m)
+        batchMapService.addJobMessage(hash, m)
+        batchMapService.addJobStatus(hash, "CREATED")
         priorityBatchQueueService.enqueue(m)
     }
 

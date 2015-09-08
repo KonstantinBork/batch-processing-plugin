@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 /**
  * batch-processor
  * @author  Konstantin Bork
- * @version 0.6
+ * @version 0.8
  * @created 08/28/2015
  *
  * The implementation of the Consumer interface.
