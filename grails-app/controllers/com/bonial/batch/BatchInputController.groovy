@@ -55,10 +55,10 @@ class BatchInputController implements InputController {
     @Override
     void stopTask(String batchId) {
         JobOperator operator = springBatchService.jobOperator
-        if(batchMapService.getJobStatus(batchExecutionId) != "EXECUTING") return
-        JobExecution execution = getLastExecution(batchExecutionId)
+        if(batchMapService.getJobStatus(batchId) != "EXECUTING") return
+        JobExecution execution = getLastExecution(batchId)
         operator.stop(execution.id)
-        batchMapService.addJobStatus(batchExecutionId, "STOPPED")
+        batchMapService.addJobStatus(batchId, "STOPPED")
     }
 
     JobExecution getLastExecution(String id) {
