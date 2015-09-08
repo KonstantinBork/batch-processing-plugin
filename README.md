@@ -11,7 +11,7 @@ Grails 2.2 or above
 If you want to use this plugin in your Grails application you just have to include this plugin into your application
 via your BuildConfig.groovy file. Then add following code snippet to your `Config.groovy`:
 
-	pugin {
+	plugin {
     	springBatch {
         	jmx {
             	enable = true 
@@ -19,11 +19,11 @@ via your BuildConfig.groovy file. Then add following code snippet to your `Confi
                 	enable = false  
             	}  
         	}  
-        	loadTables = true  
-        	database = "h2"  
-   	}  
+        	loadTables = true
+        	database = "h2"
+        }
     }
-
+    
 	grails.plugin.databasemigration.ignoredObjects = ['BATCH_JOB_EXECUTION',  
     	                                              'BATCH_JOB_EXECUTION_CONTEXT','BATCH_JOB_EXECUTION_SEQ',  
         	                                          'BATCH_JOB_INSTANCE','BATCH_JOB_PARAMS','BATCH_JOB_SEQ',  
@@ -88,7 +88,6 @@ Then add the following code snippet to your `DataSource.groovy`:
 
 Of course, you are able to change both files to your needs. These snippets are minimal requirements to run your application
 with this plugin.
-    
                      
 #### Batch Job Creation
 When the plugin is installed successfully you should see a folder called `batch` in your `grails-app` directory. You define
@@ -99,6 +98,7 @@ You find job examples in the plugin source code.
                      
 ### Dependencies
 * Spring Batch Plugin 2.0.0, more information [here](https://github.com/johnrengelman/grails-spring-batch)
+* Grails Plugin Platform Core 1.0.RC6, more information [here](https://grails.org/plugin/platform-core)
 * Spring Integration 2.2.6.RELEASE, more information [here](http://docs.spring.io/spring-integration/docs/2.2.6.RELEASE/reference/html/)
 
 ### Further Information
