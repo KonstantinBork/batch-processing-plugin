@@ -15,6 +15,8 @@ import org.springframework.integration.channel.PriorityChannel
 
 class PriorityBatchQueueService implements Queue {
 
+    def jobMessageMapService
+
     static int QUEUE_SIZE = 1000
     def priorityQueueChannel = new PriorityChannel(QUEUE_SIZE)
 
@@ -23,6 +25,8 @@ class PriorityBatchQueueService implements Queue {
         if(priorityQueueChannel.remainingCapacity == 0)
             return false
         def sent = priorityQueueChannel.send(message)
+        long id = jobMessageMapService.hashMessage(message)
+        jobMessageMapService.addJobStatus(id, "QUEUED")
         return sent
     }
 
