@@ -1,8 +1,13 @@
 package com.bonial.batch
 
 import com.bonial.batch.interfaces.InputController
-import org.springframework.batch.core.configuration.JobRegistry
+import grails.util.Holders
+import org.springframework.batch.core.JobExecution
+import org.springframework.batch.core.JobParameter
+import org.springframework.batch.core.JobParameters
 import org.springframework.batch.core.launch.JobOperator
+import org.springframework.batch.core.repository.JobRepository
+import org.springframework.integration.Message
 
 /**
  * batch-processor
@@ -20,6 +25,7 @@ class BatchInputController implements InputController {
     def priorityBatchProducerService
     def springBatchService
     def batchConsumerService
+    def jobMessageMapService
 
     def consumerThread = {
         while (true)
@@ -28,17 +34,11 @@ class BatchInputController implements InputController {
 
     boolean isConsumerRunning = false
 
-    BatchInputController() {
-
-    }
-
     def index() {
         if(!isConsumerRunning) {
             Thread.start(consumerThread)
             isConsumerRunning = true
         }
-        Map lists = prepareLists()
-        render(view: "index", model: lists)
     }
 
     @Override
@@ -50,25 +50,24 @@ class BatchInputController implements InputController {
 
     @Override
     def getStatus(def batchExecutionId) {
-        redirect(controller: "springBatchJobExecution", action: "show", id: batchExecutionId)
+        return jobMessageMapService.getJobStatus(batchExecutionId)
     }
 
     @Override
     def stopTask(def batchExecutionId) {
         JobOperator operator = springBatchService.jobOperator
-        operator.stop(batchExecutionId)
+        if(jobMessageMapService.getJobStatus(batchExecutionId) != "EXECUTING") return
+        JobExecution execution = getLastExecution(batchExecutionId)
+        operator.stop(execution.id)
+        jobMessageMapService.addJobStatus(batchExecutionId, "STOPPED")
     }
 
-    private Map prepareLists() {
-        JobRegistry registry = springBatchService.jobRegistry
-        Collection<String> jobs = registry.jobNames
-        JobOperator operator = springBatchService.jobOperator
-        Map runningExecutions = [:]
-        for(String job in jobs) {
-            Set<Long> execs = operator.getRunningExecutions(job)
-            runningExecutions.put(job, execs)
-        }
-        return [jobNames: jobs, executions: runningExecutions]
+    JobExecution getLastExecution(String id) {
+        Message message = jobMessageMapService.getJobMessage(id)
+        String jobName = message.payload.job.name
+        JobParameters params = message.payload.jobParameters
+        JobRepository repository = Holders.grailsApplication.mainContext.getBean("jobRepository")
+        return repository.getLastJobExecution(jobName, params)
     }
 
 }
