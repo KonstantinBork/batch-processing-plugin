@@ -2,6 +2,8 @@ package com.bonial.batch
 
 import org.springframework.integration.Message
 
+import java.security.MessageDigest
+
 /**
  * batch-processing-plugin
  * @author Konstantin Bork
@@ -27,9 +29,8 @@ class JobMessageMapService {
      * @param id unique identifier for the JobExecution
      * @param message the job message to save
      */
-    void addJobMessage(long id, Message message) {
-        String idString = id.toString()
-        jobMessages.put(idString, message)
+    void addJobMessage(String id, Message message) {
+        jobMessages.put(id, message)
     }
 
     /**
@@ -38,9 +39,8 @@ class JobMessageMapService {
      * @param id the id of the job
      * @param status the current status of the job
      */
-    void addJobStatus(long id, String status) {
-        String idString = id.toString()
-        jobStatus.put(idString, status)
+    void addJobStatus(String id, String status) {
+        jobStatus.put(id, status)
     }
 
     /**
@@ -49,7 +49,7 @@ class JobMessageMapService {
      * @param id identifier for the JobExecution to find
      * @return the JobExecution for the given id
      */
-    Message getJobMessage(long id) {
+    Message getJobMessage(String id) {
         return jobMessages.get(id)
     }
 
@@ -59,11 +59,26 @@ class JobMessageMapService {
      * @param id id of the job
      * @return status of the given job
      */
-    String getJobStatus(long id) {
+    String getJobStatus(String id) {
         return jobStatus.get(id)
     }
 
-    long hashMessage(Message m) {
+    /**
+     * Get the MD5 hash of the given message.
+     *
+     * @param m message to find a hash for
+     * @return hash value of the given message
+     */
+    String hashMessage(Message m) {
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5")
+        try {
+            byte[] digest = messageDigest.digest(m.toString().getBytes())
+            BigInteger number = new BigInteger(1, digest)
+            String hashtext = number.toString(16)
+            return hashtext
+        } catch(e) {
+
+        }
         return m.hashCode()
     }
 

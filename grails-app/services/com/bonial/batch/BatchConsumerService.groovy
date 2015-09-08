@@ -20,7 +20,6 @@ class BatchConsumerService implements Consumer {
     static transactional = false
 
     def priorityBatchQueueService
-    def jobMessageMapService
 
     static final Random RANDOM_OBJECT = new Random()
     static final int MAX_WAITING_MILLISECONDS = 10000
@@ -37,8 +36,6 @@ class BatchConsumerService implements Consumer {
     @Override
     void consumeNextTask() {
         Message m = priorityBatchQueueService.dequeue()
-        long id = jobMessageMapService.hashMessage(m)
-        jobMessageMapService.addJobStatus(id, "EXECUTING")
         Worker w = getWorker()
         Thread.start {
             runTask(w, m)
@@ -57,8 +54,6 @@ class BatchConsumerService implements Consumer {
     void runTask(Worker w, Message m) {
         w.start(m)
         busyWorkers.remove(w)
-        long id = jobMessageMapService.hashMessage(m)
-        jobMessageMapService.addJobStatus(id, "FINISHED")
         availableWorkers.add(w)
         Thread.sleep(RANDOM_OBJECT.nextInt(MAX_WAITING_MILLISECONDS))
     }

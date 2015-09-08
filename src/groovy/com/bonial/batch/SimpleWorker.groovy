@@ -2,6 +2,7 @@ package com.bonial.batch
 
 import com.bonial.batch.interfaces.Worker
 import grails.util.Holders
+import org.springframework.batch.core.BatchStatus
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.JobExecution
 import org.springframework.batch.core.JobParameter
@@ -21,6 +22,7 @@ import org.springframework.integration.Message
 class SimpleWorker implements Worker {
 
     def springBatchService = Holders.grailsApplication.mainContext.getBean("springBatchService")
+    def jobMessageMapService = Holders.grailsApplication.mainContext.getBean("jobMessageMapService")
 
     def currentTask
     def currentTaskExecutionId = -1
@@ -36,8 +38,11 @@ class SimpleWorker implements Worker {
             }
             JobLauncher launcher = springBatchService.jobLauncher
             JobExecution execution = launcher.run(job, params)
-            while(execution.exitStatus.exitCode == "EXECUTING")
+            String id = jobMessageMapService.hashMessage(taskMessage)
+            jobMessageMapService.addJobStatus(id, "EXECUTING")
+            while(execution.status != BatchStatus.COMPLETED && execution.status != BatchStatus.STOPPED)
                 Thread.sleep(1000)
+            jobMessageMapService.addJobStatus(id, "FINISHED")
             return true
         } catch(e) {
             print("$e\n")

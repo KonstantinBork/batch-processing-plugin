@@ -30,7 +30,7 @@ class PriorityBatchProducerService implements Producer {
         Job job = findJob(jobName)
         JobLaunchRequest launchRequest = buildLaunchRequest(job, params)
         Message m = new GenericMessage(launchRequest, [priority: Integer.parseInt(priority)])
-        long hash = jobMessageMapService.hashMessage(m)
+        String hash = jobMessageMapService.hashMessage(m)
         jobMessageMapService.addJobMessage(hash, m)
         jobMessageMapService.addJobStatus(hash, "CREATED")
         priorityBatchQueueService.enqueue(m)
