@@ -2,6 +2,13 @@ package com.bonial.batch
 
 import org.junit.*
 
+/**
+ * batch-processor
+ * @author  Konstantin Bork
+ * @version 0.9
+ * @created 09/10/2015
+ */
+
 class BatchInputTests {
 
     BatchInputController batchInputController = new BatchInputController()

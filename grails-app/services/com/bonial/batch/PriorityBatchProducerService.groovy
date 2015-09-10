@@ -12,7 +12,7 @@ import org.springframework.integration.message.GenericMessage
 /**
  * batch-processing-plugin
  * @author  Konstantin Bork
- * @version 0.6
+ * @version 0.9
  * @created 09/03/2015
  *
  * Another implementation of the Queue interface.

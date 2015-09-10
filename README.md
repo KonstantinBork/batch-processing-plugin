@@ -1,7 +1,7 @@
 # Batch Processing Plugin for Grails (Beta, Release Candidate)
 
 The Batch Processing Plugin allows your application to use batch jobs to process tasks. It uses Spring Batch to define
-batch jobs and Spring Integration to save created jobs in a queue.
+batch jobs and Spring Integration to save created jobs in a priority queue.
 
 ### Requirements
 Grails 2.2 or above
@@ -95,6 +95,16 @@ your jobs here with Groovy DSL. It is important that the file names end with `Ba
 step ids, too, as they should be unique. To prevent problems, find unique job names and name your steps like the scheme
 `[jobName]_[stepName]`. After defining your jobs, you implement your steps in your application's `src` folder.  
 You find job examples in the plugin source code.
+
+#### How to Use the Plugin in Your Application
+Include an instance of BatchInputController in your application, it will be the only instance possible as the controller
+is configured as a singleton. The necessary parameters for creating a new job instance are the name of your job and the
+file you want to process. The default priority is set to 0 but you can set your own priority, the higher the number is the
+higher the priority of the job is.  
+You get a list of all jobs ever executed by your application. This behavior will be optimized in a later release. For each
+execution you are able to ask its current status or if possible stop it. In a later release you will be able to restart
+your job execution again.  
+If you want to you can also change the number of workers depending on your system.
                      
 ### Dependencies
 * Spring Batch Plugin 2.0.0, more information [here](https://github.com/johnrengelman/grails-spring-batch)
@@ -103,6 +113,8 @@ You find job examples in the plugin source code.
 
 ### Further Information
 Version 0.9 build 30 Release Candidate  
+
+If you have any questions, contact me:
 E-mail: konstantin.bork[at]gmail.com  
 Website: [https://github.com/KonstantinBork/batch-processing-plugin](https://github.com/KonstantinBork/batch-processing-plugin)  
 Twitter: [https://twitter.com/flakenerd](https://twitter.com/flakenerd)  

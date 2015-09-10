@@ -7,7 +7,7 @@ import java.security.MessageDigest
 /**
  * batch-processing-plugin
  * @author Konstantin Bork
- * @version 0.8
+ * @version 0.9
  * @created 09/07/2015
  *
  * A service which saves all incoming tasks in memory.

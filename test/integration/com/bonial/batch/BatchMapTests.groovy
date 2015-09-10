@@ -4,6 +4,13 @@ import org.junit.*
 import org.springframework.integration.Message
 import org.springframework.integration.message.GenericMessage
 
+/**
+ * batch-processor
+ * @author  Konstantin Bork
+ * @version 0.9
+ * @created 09/10/2015
+ */
+
 class BatchMapTests {
 
     BatchMapService batchMapService

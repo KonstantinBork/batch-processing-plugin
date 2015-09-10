@@ -5,6 +5,13 @@ import org.springframework.integration.message.GenericMessage
 
 import org.junit.*
 
+/**
+ * batch-processor
+ * @author  Konstantin Bork
+ * @version 0.9
+ * @created 09/10/2015
+ */
+
 class PriorityBatchQueueTests {
 
     PriorityBatchQueueService priorityBatchQueueService
