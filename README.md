@@ -1,4 +1,4 @@
-# Batch Processing Plugin for Grails (beta)
+# Batch Processing Plugin for Grails (Beta, Release Candidate)
 
 The Batch Processing Plugin allows your application to use batch jobs to process tasks. It uses Spring Batch to define
 batch jobs and Spring Integration to save created jobs in a queue.
@@ -102,7 +102,7 @@ You find job examples in the plugin source code.
 * Spring Integration 2.2.6.RELEASE, more information [here](http://docs.spring.io/spring-integration/docs/2.2.6.RELEASE/reference/html/)
 
 ### Further Information
-Version 0.8 build 29  
+Version 0.9 build 30 Release Candidate  
 E-mail: konstantin.bork[at]gmail.com  
 Website: [https://github.com/KonstantinBork/batch-processing-plugin](https://github.com/KonstantinBork/batch-processing-plugin)  
 Twitter: [https://twitter.com/flakenerd](https://twitter.com/flakenerd)  

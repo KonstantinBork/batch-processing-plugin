@@ -62,4 +62,13 @@ class BatchMapTests {
         assert status == n
     }
 
+    @Test
+    void testHashing() {
+        Message m = new GenericMessage("Hello World!")
+        Message n = new GenericMessage("Hello World!")
+        String mHash = batchMapService.hashMessage(m)
+        String nHash = batchMapService.hashMessage(n)
+        assert mHash != nHash
+    }
+
 }
