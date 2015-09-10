@@ -42,9 +42,12 @@ class BatchInputController implements InputController {
 
     @Override
     void registerTask(String batchTaskName, def batchFile, String priority) {
-        File temp = File.createTempFile("temp", ".txt")
-        batchFile.transferTo(temp)
-        priorityBatchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"], priority)
+        if(batchFile) {
+            File temp = File.createTempFile("temp", ".txt")
+            batchFile.transferTo(temp)
+            priorityBatchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"], priority)
+        }
+        priorityBatchProducerService.produceTask(batchTaskName, null, priority)
     }
 
     @Override
@@ -55,7 +58,8 @@ class BatchInputController implements InputController {
     @Override
     void stopTask(String batchId) {
         JobOperator operator = springBatchService.jobOperator
-        if(batchMapService.getJobStatus(batchId) != "EXECUTING") return
+        if(!batchMapService.getJobStatus(batchId) || batchMapService.getJobStatus(batchId) != "EXECUTING")
+            return
         JobExecution execution = getLastExecution(batchId)
         operator.stop(execution.id)
         batchMapService.addJobStatus(batchId, "STOPPED")
