@@ -42,10 +42,11 @@ class BatchInputController implements InputController {
 
     @Override
     void registerTask(String batchTaskName, def batchFile, String priority) {
-        if(batchFile) {
+        if(batchFile.fileItem.name != "") {
             File temp = File.createTempFile("temp", ".txt")
             batchFile.transferTo(temp)
             priorityBatchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"], priority)
+            return
         }
         priorityBatchProducerService.produceTask(batchTaskName, null, priority)
     }

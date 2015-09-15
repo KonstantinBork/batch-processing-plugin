@@ -112,7 +112,7 @@ If you want to you can also change the number of workers depending on your syste
 * Spring Integration 2.2.6.RELEASE, more information [here](http://docs.spring.io/spring-integration/docs/2.2.6.RELEASE/reference/html/)
 
 ### Further Information
-Version 0.9 build 30 Release Candidate  
+Version 0.9 build 31 Release Candidate  
 
 If you have any questions, contact me:
 E-mail: konstantin.bork[at]gmail.com  
