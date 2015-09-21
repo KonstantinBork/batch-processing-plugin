@@ -7,7 +7,7 @@ import org.springframework.integration.channel.PriorityChannel
 /**
  * batch-processor
  * @author  Konstantin Bork
- * @version 0.6
+ * @version 0.9
  * @created 09/03/2015
  *
  * Another implementation of the Queue interface.

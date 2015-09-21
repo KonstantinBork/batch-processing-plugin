@@ -11,7 +11,7 @@ import org.springframework.integration.Message
 /**
  * batch-processor
  * @author  Konstantin Bork
- * @version 0.8
+ * @version 0.9
  * @created 08/28/2015
  *
  * Controller for incoming batch tasks.
@@ -42,9 +42,13 @@ class BatchInputController implements InputController {
 
     @Override
     void registerTask(String batchTaskName, def batchFile, String priority) {
-        File temp = File.createTempFile("temp", ".txt")
-        batchFile.transferTo(temp)
-        priorityBatchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"], priority)
+        if(batchFile.fileItem.name != "") {
+            File temp = File.createTempFile("temp", ".txt")
+            batchFile.transferTo(temp)
+            priorityBatchProducerService.produceTask(batchTaskName, [file: "file:${temp.path}"], priority)
+            return
+        }
+        priorityBatchProducerService.produceTask(batchTaskName, null, priority)
     }
 
     @Override
@@ -55,10 +59,11 @@ class BatchInputController implements InputController {
     @Override
     void stopTask(String batchId) {
         JobOperator operator = springBatchService.jobOperator
-        if(batchMapService.getJobStatus(batchExecutionId) != "EXECUTING") return
-        JobExecution execution = getLastExecution(batchExecutionId)
+        if(!batchMapService.getJobStatus(batchId) || batchMapService.getJobStatus(batchId) != "EXECUTING")
+            return
+        JobExecution execution = getLastExecution(batchId)
         operator.stop(execution.id)
-        batchMapService.addJobStatus(batchExecutionId, "STOPPED")
+        batchMapService.addJobStatus(batchId, "STOPPED")
     }
 
     JobExecution getLastExecution(String id) {

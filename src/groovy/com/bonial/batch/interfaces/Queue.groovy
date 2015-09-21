@@ -5,7 +5,7 @@ import org.springframework.integration.Message
 /**
  * batch-processing-plugin
  * @author Konstantin Bork
- * @version 0.8
+ * @version 0.9
  * @created 08/28/2015
  *
  * Interface for the batch task queue.
