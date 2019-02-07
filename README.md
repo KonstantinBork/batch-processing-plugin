@@ -1,4 +1,4 @@
-# Batch Processing Plugin for Grails (Beta, Release Candidate)
+# Batch Processing Plugin for Grails
 
 The Batch Processing Plugin allows your application to use batch jobs to process tasks. It uses Spring Batch to define
 batch jobs and Spring Integration to save created jobs in a priority queue.
@@ -14,7 +14,7 @@ via your BuildConfig.groovy file. Then add following code snippet to your `Confi
 	plugin {
     	springBatch {
         	jmx {
-            	enable = true 
+            	enable = true
             	remote {  
                 	enable = false  
             	}  
@@ -23,7 +23,7 @@ via your BuildConfig.groovy file. Then add following code snippet to your `Confi
         	database = "h2"
         }
     }
-    
+
 	grails.plugin.databasemigration.ignoredObjects = ['BATCH_JOB_EXECUTION',  
     	                                              'BATCH_JOB_EXECUTION_CONTEXT','BATCH_JOB_EXECUTION_SEQ',  
         	                                          'BATCH_JOB_INSTANCE','BATCH_JOB_PARAMS','BATCH_JOB_SEQ',  
@@ -32,7 +32,7 @@ via your BuildConfig.groovy file. Then add following code snippet to your `Confi
                     	                              'IDX_BATCH_JOB_INSTANCE_JOB_NAME_JOB_KEY','JOB_INST_UN',  
                         	                          'IDX_BATCH_STEP_EXECUTION_STEP_NAME_JOB_EXECUTION_ID',  
                             	                      'IDX_BATCH_STEP_EXECUTION_VERSION']
-                            	                      
+
 Then add the following code snippet to your `DataSource.groovy`:
 
 	environments {
@@ -88,7 +88,7 @@ Then add the following code snippet to your `DataSource.groovy`:
 
 Of course, you are able to change both files to your needs. These snippets are minimal requirements to run your application
 with this plugin.
-                     
+
 #### Batch Job Creation
 When the plugin is installed successfully you should see a folder called `batch` in your `grails-app` directory. You define
 your jobs here with Groovy DSL. It is important that the file names end with `BatchConfig`. Keep an eye on all the job and
@@ -105,19 +105,19 @@ You get a list of all jobs ever executed by your application. This behavior will
 execution you are able to ask its current status or if possible stop it. In a later release you will be able to restart
 your job execution again.  
 If you want to you can also change the number of workers depending on your system.
-                     
+
 ### Dependencies
 * Spring Batch Plugin 2.0.0, more information [here](https://github.com/johnrengelman/grails-spring-batch)
 * Grails Plugin Platform Core 1.0.RC6, more information [here](https://grails.org/plugin/platform-core)
 * Spring Integration 2.2.6.RELEASE, more information [here](http://docs.spring.io/spring-integration/docs/2.2.6.RELEASE/reference/html/)
 
 ### Further Information
-Version 0.9 build 31 Release Candidate  
+Version 1.0
 
 If you have any questions, contact me:
 E-mail: konstantin.bork[at]gmail.com  
 Website: [https://github.com/KonstantinBork/batch-processing-plugin](https://github.com/KonstantinBork/batch-processing-plugin)  
 Twitter: [https://twitter.com/flakenerd](https://twitter.com/flakenerd)  
 
-&copy; 2015 Konstantin Bork  
+&copy; 2019 Konstantin Bork  
 Licensed under the Apache License, Version 2.0 (see LICENSE).
