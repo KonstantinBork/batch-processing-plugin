@@ -101,9 +101,8 @@ Include an instance of BatchInputController in your application, it will be the 
 is configured as a singleton. The necessary parameters for creating a new job instance are the name of your job and the
 file you want to process. The default priority is set to 0 but you can set your own priority, the higher the number is the
 higher the priority of the job is.  
-You get a list of all jobs ever executed by your application. This behavior will be optimized in a later release. For each
-execution you are able to ask its current status or if possible stop it. In a later release you will be able to restart
-your job execution again.  
+You get a list of all jobs ever executed by your application. For each execution you are able to ask its current status
+or if possible stop it. In a later release you will be able to restart your job execution again.  
 If you want to you can also change the number of workers depending on your system.
 
 ### Dependencies
@@ -114,10 +113,10 @@ If you want to you can also change the number of workers depending on your syste
 ### Further Information
 Version 1.0
 
-If you have any questions, contact me:
-E-mail: konstantin.bork[at]gmail.com  
-Website: [https://github.com/KonstantinBork/batch-processing-plugin](https://github.com/KonstantinBork/batch-processing-plugin)  
+If you have any questions, contact me:  
+Email: konstantin.bork[at]gmail.com  
+Website: [https://konstantinbork.me/](https://konstantinbork.me/)  
 Twitter: [https://twitter.com/flakenerd](https://twitter.com/flakenerd)  
 
 &copy; 2019 Konstantin Bork  
-Licensed under the Apache License, Version 2.0 (see LICENSE).
+Licensed under the MIT License (see LICENSE).
