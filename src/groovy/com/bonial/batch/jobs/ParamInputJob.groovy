@@ -12,7 +12,7 @@ import org.springframework.batch.item.file.LineMapper
  * @version 1.0
  * @created 09/01/2015
  *
- * Example for a job step which read, processes and writes data.
+ * Example for a job step which reads, processes and writes data.
  */
 
 class FileLineMapper implements LineMapper<NameItem> {

@@ -11,7 +11,7 @@ import org.springframework.batch.repeat.RepeatStatus
  * @version 1.0
  * @created 08/28/2015
  *
- * Example for the look of a tasklet.
+ * Example of a tasklet.
  */
 
 class SampleJobTasklet implements Tasklet {
