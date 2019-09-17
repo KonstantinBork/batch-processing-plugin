@@ -119,4 +119,4 @@ Website: [https://konstantinbork.me/](https://konstantinbork.me/)
 Twitter: [https://twitter.com/flakenerd](https://twitter.com/flakenerd)  
 
 &copy; 2019 Konstantin Bork  
-Licensed under the Apache License, Version 2.0 (see LICENSE).
+Licensed under the MIT License (see LICENSE).
